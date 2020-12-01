@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_ui_design/screens/home.dart';
 import 'package:flutter_app_ui_design/screens/splash.dart';
 import 'package:flutter_app_ui_design/utils/custom_colors.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_ui_design/resources/app_colors.dart';
-import 'package:flutter_app_ui_design/screens/login.dart';
+import 'package:flutter_app_ui_design/screens/common_login.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen>
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Login(),
+          builder: (context) => CommonLogin(),
         ));
   }
 
