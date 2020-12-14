@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui_design/db/database_helper.dart';
+import 'package:flutter_app_ui_design/model/user_model.dart';
 import 'package:flutter_app_ui_design/resources/app_colors.dart';
 import 'package:flutter_app_ui_design/resources/strings.dart';
 import 'package:flutter_app_ui_design/resources/text_styles.dart';
@@ -7,8 +9,10 @@ import 'package:flutter_app_ui_design/utils/CircleButton.dart';
 import 'package:flutter_app_ui_design/utils/device_size.dart';
 import 'package:flutter_app_ui_design/utils/utility.dart';
 import 'package:flutter_app_ui_design/utils/widget.dart';
+import 'package:intl/intl.dart';
 
 class SignUp extends StatefulWidget {
+
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -18,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController _edtUserName = new TextEditingController();
   TextEditingController _edtEmail = new TextEditingController();
   TextEditingController _edtPass = new TextEditingController();
+  DatabaseHelper databaseHelper = new DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +107,7 @@ class _SignUpState extends State<SignUp> {
                               alignment: Alignment.topLeft,
                               child: TextFormField(
                                 controller: _edtEmail,
+
                                 validator: (val) {
                                   return Utility.validateEmail(val)
                                       ? null
@@ -120,6 +126,7 @@ class _SignUpState extends State<SignUp> {
                                   border: InputBorder.none,
                                 ),
                                 style: AppTextStyles.normalFont18,
+
                               ),
                             ),
                             Divider(color: AppColors.lightTextColor),
@@ -132,6 +139,7 @@ class _SignUpState extends State<SignUp> {
                                       ? Strings.pass_error
                                       : null;
                                 },
+
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   hintText: Strings.password,
@@ -158,10 +166,11 @@ class _SignUpState extends State<SignUp> {
                         child: CircleButton(
                             onTap: () {
                               if(_formKey.currentState.validate()){
-
+                               setState(() {
+                                 signUp();
+                               });
                               }
                             },
-
                             iconData: Icons.done_outlined),
                       ),
                     ),
@@ -193,4 +202,58 @@ class _SignUpState extends State<SignUp> {
       ),
     ));
   }
+
+  // void updateEmail(){
+  //   _userModel.email = _edtEmail.text;
+  // }
+  //
+  // void updateUserName(){
+  //   _userModel.userName = _edtUserName.text;
+  // }
+  //
+  // void updatePass(){
+  //   _userModel.userPass = _edtPass.text;
+  // }
+
+  void  moveToLastScreen(){
+    Navigator.pop(context,true);
+  }
+
+  void signUp() async{
+
+    UserModel _userModel = new UserModel();
+    _userModel.userName = _edtUserName.text;
+    // debugPrint(_userModel.userName);
+    _userModel.email= _edtEmail.text;
+    _userModel.password=_edtPass.text;
+    var a = await databaseHelper.getBoolValuesSF();
+
+    debugPrint(a.toString());
+    // moveToLastScreen();
+    _userModel.createdDate = DateFormat.yMMMMd().format(DateTime.now());
+    int result;
+    result = await databaseHelper.signUpUser(_userModel);
+
+    if( result == -1){  // success
+      _showAlertDialog(context,'Status', 'This email id is already registered with us. Please try with another email. ');
+    } else if (result != 0){
+      _showAlertDialog(context,'Status', 'User created successfully.');
+
+    }
+    else{ // failure
+      _showAlertDialog(context,'Status', 'Problem in creating user.');
+    }
+  }
+
+}
+
+void _showAlertDialog(BuildContext context,String title, String message) {
+  AlertDialog alertDialog = AlertDialog(
+    title: Text(title),
+    content: Text(message),
+  );
+  showDialog(
+      context: context,
+      builder: (_) => alertDialog
+  );
 }

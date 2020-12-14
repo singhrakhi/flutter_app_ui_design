@@ -48,3 +48,14 @@ void navigationPushReplacePage(BuildContext context, var login ) {
         builder: (context) => login,
       ));
 }
+
+void _showAlertDialog(BuildContext context,String title, String message) {
+  AlertDialog alertDialog = AlertDialog(
+    title: Text(title),
+    content: Text(message),
+  );
+  showDialog(
+      context: context,
+      builder: (_) => alertDialog
+  );
+}

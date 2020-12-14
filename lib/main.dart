@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui_design/screens/login.dart';
+import 'package:flutter_app_ui_design/screens/sign_up.dart';
 import 'package:flutter_app_ui_design/screens/splash.dart';
 import 'package:flutter_app_ui_design/utils/custom_colors.dart';
 

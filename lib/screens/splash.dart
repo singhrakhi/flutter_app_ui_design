@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui_design/db/prefrences.dart';
 import 'package:flutter_app_ui_design/resources/app_colors.dart';
 import 'package:flutter_app_ui_design/screens/common_login.dart';
+import 'home.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -19,12 +21,24 @@ class _SplashScreenState extends State<SplashScreen>
     return Timer(_duration, navigationPage);
   }
 
-  void navigationPage() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CommonLogin(),
-        ));
+  void navigationPage() async{
+
+    var isLogin1 = await MyPref().getBoolValuesSF();
+
+    if(isLogin1){
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ));
+    } else {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CommonLogin(),
+          ));
+    }
+
   }
 
   @override
